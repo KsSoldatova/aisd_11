@@ -50,16 +50,6 @@ public:
 			data[i] = point(_x, _y);
 		}
 	}
-	
-	Lines(const Lines& l) {
-		size = l.size;
-		data = new point[size];
-		for (size_t i = 0; i < size; i++)
-		{
-			data[i] = l.data[i];
-		}
-	}
-
 	Lines(const point& p) {
 		size = 1;
 		data = new point[size];

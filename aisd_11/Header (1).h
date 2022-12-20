@@ -6,18 +6,18 @@ using namespace std;
 
 struct point {
 	double x, y;
-	point() {
-		x = 0;
-		y = 0;
-	}
-	point(double _x, double _y) {
+	//*point() {
+	//	x = 0;
+	//	y = 0;
+	//}*/
+	point(double _x=0, double _y=0) {
 		x = _x;
 		y = _y;
 	}
-	point(const point& p) {
-		x = p.x;
-		y = p.y;
-	}
+	//point(const point& p) {
+	//	x = p.x;
+	//	y = p.y;
+	//}
 	friend ostream& operator<<(ostream& os, const point& rhs)
 	{
 		os << "point: (" << rhs.x << "," << rhs.y << ")" << endl;
@@ -30,38 +30,21 @@ class Lines {
 	int size;
 	double Eps=0;
 public:
-	Lines() {
-		size = 1;
-		data = new point[size];
-		data[0] = point(0, 0);
-	}
-
-	Lines(int _size) {
-		if (_size < 1) throw exception("Invalid syntaxis");
+	Lines(double _x, double _y,int _size =1) {
 		size = _size;
 		data = new point[size];
-		for (size_t i = 0; i < size; i++)
-		{
-			cout << "[" << i << "]: x=";
-			double _x=0, _y=0;
-			cin >> _x;
-			cout << "y=";
-			cin >> _y;
-			data[i] = point(_x, _y);
-		}
+		data[0] = point(_x, _y);
 	}
+	/*Lines(double _x,double _y) {
+		size = 1;
+		data = new point[size];
+		data[0] = point(_x,_y);
+	}*/
 	Lines(const point& p) {
 		size = 1;
 		data = new point[size];
 		data[0] = p;
 	}
-
-	Lines(double _x,double _y) {
-		size = 1;
-		data = new point[size];
-		data[0] = point(_x,_y);
-	}
-
 	~Lines() {
 		delete[] data;
 		data = nullptr;
@@ -133,11 +116,11 @@ public:
 		point* temp = new point[l.size + size];
 
 		for (int i = 0; i < size; ++i)
-		{	
+		{
 			temp[i] = data[i];
 		}
 
-		for (int i = size; i < l.size+size; ++i)
+		for (int i = size; i < l.size + size; ++i)
 		{
 			temp[i] = l.data[i - size];
 		}
@@ -176,13 +159,14 @@ public:
 		return temp;
 	}
 
-	friend Lines operator+(const point& p, const Lines& l) {
-		Lines temp(p);
+	/*friend Lines operator+(const point& p, const Lines& l) {
+		Lines temp;
+		temp[0] = p;
 		temp += l;
 		return temp;
-	}
+	}*/
 
-	bool operator==(const Lines& l) {
+	/*bool operator==(const Lines& l) {
 		if (l.size != size) {
 			return false;
 		}
@@ -197,9 +181,20 @@ public:
 			}
 			return true;
 		}
-	}
-	bool operator!=(const Lines& l) {
+	}*/
+	/*bool operator!=(const Lines& l) {
 		return !(*this == l);
+	}*/
+	void myletter() const {
+		Lines b(0,0);
+		b += point(-0.2, 0);
+		b += point(-0.2, 0.5);
+		b += point(0.01, 0.5);
+		/*for (size_t i = 0; i < b.get_size(); i++)
+		{
+			cout << b[i];
+		}*/
+		cout << b;
 	}
 
 	double length() const {

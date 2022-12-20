@@ -1,7 +1,6 @@
 ﻿#include "Header (1).h"
 
 
-
 int menu()
 {
 	cout << "What are you want to do? To press.." << endl;
@@ -11,8 +10,7 @@ int menu()
 	cout << "4 - Get length" << endl;
 	cout << "5 - Get image of broken line" << endl;
 	cout << "6 - First letter of my surname" << endl;
-	cout << "7 - Find the top by index" << endl;
-	cout << "8 - Go out" << endl;
+	cout << "7 - Go out" << endl;
 	int m;
 	cin >> m;
 	return m;
@@ -27,13 +25,13 @@ point get_points() {
 }
 int main()
 {
-	
+
 	cout << "Enter the number of tops of broken line: " << endl;
 	int size;
 	cin >> size;
-	Lines a(0,0);
+	Lines a(0, 0);
 	Lines c(0, 0);
-	point p,p1;
+	point p, p1;
 	for (int i = 0; i < size; i++) {
 
 		p = get_points();
@@ -44,7 +42,7 @@ int main()
 		m = menu();
 		switch (m) {
 		case 1:
-			cout<<"Enter the number of tops of new broken line: " << endl;
+			cout << "Enter the number of tops of new broken line: " << endl;
 			int size1;
 			cin >> size1;
 			for (int i = 0; i < size1; i++) {
@@ -88,33 +86,12 @@ int main()
 			cout << a;
 			break;
 		case 6:
-			Lines b(0, 0);
-			b += point(-0.2, 0);
-			b += point(-0.2, 0.5);
-			b += point(0.01, 0.5);
-			for (size_t i = 0; i < b.get_size(); i++)
-			{
-				cout << b[i];
-			}
-			cout << b;
+			a.myletter();
 			break;
-		//case 7:
-		//	cout << "Enter index of the top" << endl;
-		//	int index;
-		//	cin >> index;
-		//	if (index <= size) {
-		//		for (size_t i = 0; i < a.get_size(); i++)
-		//		{
-		//			if (a[i].x == a[index].x && a[i].y == a[index].y)
-		//			{
-		//				cout << a[i];
-		//			}
-		//		}
-		//	}
 		}
-	} while (m != 8);
-	
+	} while (m != 7);
 
-	
-	
+
+
+
 }

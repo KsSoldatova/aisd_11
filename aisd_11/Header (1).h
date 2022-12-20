@@ -40,11 +40,11 @@ public:
 		data = new point[size];
 		data[0] = point(_x,_y);
 	}*/
-	Lines(const point& p) {
+	/*Lines(const point& p) {
 		size = 1;
 		data = new point[size];
 		data[0] = p;
-	}
+	}*/
 	~Lines() {
 		delete[] data;
 		data = nullptr;
@@ -133,7 +133,7 @@ public:
 	}
 
 	Lines operator+(const Lines& l) const {
-		Lines temp(*this);
+		Lines temp(0,0);
 		temp += l;
 		return temp;
 	}
@@ -154,7 +154,7 @@ public:
 	}
 
 	Lines operator+(const point& p) const {
-		Lines temp(*this);
+		Lines temp(0,0);
 		temp += p;
 		return temp;
 	}

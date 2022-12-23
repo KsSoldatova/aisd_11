@@ -10,7 +10,7 @@ struct point {
 	//	x = 0;
 	//	y = 0;
 	//}*/
-	point(double _x=0, double _y=0) {
+	point(double _x = 0, double _y = 0) {
 		x = _x;
 		y = _y;
 	}
@@ -18,6 +18,11 @@ struct point {
 	//	x = p.x;
 	//	y = p.y;
 	//}
+	point operator =(const point& p) {
+		x = p.x;
+		y = p.y;
+		return *this;
+	}
 	friend ostream& operator<<(ostream& os, const point& rhs)
 	{
 		os << "point: (" << rhs.x << "," << rhs.y << ")" << endl;
@@ -28,12 +33,11 @@ struct point {
 class Lines {
 	point* data = nullptr;
 	int size;
-	double Eps=0;
 public:
-	Lines(double _x, double _y,int _size =1) {
+	Lines(int _size = 0) {
+		if (_size == 0) return;
 		size = _size;
 		data = new point[size];
-		data[0] = point(_x, _y);
 	}
 	/*Lines(double _x,double _y) {
 		size = 1;
@@ -45,16 +49,21 @@ public:
 		data = new point[size];
 		data[0] = p;
 	}*/
-	~Lines() {
+	/*~Lines() {
 		delete[] data;
-		data = nullptr;
-	}
+	}*/
 
 	int get_size() const {
 		return size;
 	}
 
 	point& operator[](int i) {
+		if (i >= size and i < 0) {
+			throw "Invalid index";
+		}
+		return data[i];
+	}
+	point operator[](int i) const {
 		if (i >= size and i < 0) {
 			throw "Invalid index";
 		}
@@ -113,93 +122,71 @@ public:
 	}
 
 	Lines& operator+=(const Lines& l) {
-		point* temp = new point[l.size + size];
+		Lines* temp = new Lines[l.size + size];
+		temp = this;
+		*this = *temp;
 
-		for (int i = 0; i < size; ++i)
+		for (int i = 0, j = size; i < l.size; i++, j++)
 		{
-			temp[i] = data[i];
-		}
-
-		for (int i = size; i < l.size + size; ++i)
-		{
-			temp[i] = l.data[i - size];
+			(*this)[j] = l[i];
 		}
 
 		size += l.size;
-		delete[] data;
-
-		data = temp;
 		return *this;
 	}
 
-	Lines operator+(const Lines& l) const {
-		Lines temp(0,0);
-		temp += l;
-		return temp;
-	}
 
-	Lines& operator+=(const point& p) {
-		point* temp = new point[size + 1];
-		for (size_t i = 0; i < size; i++)
-		{
-			temp[i] = data[i];
+	Lines& operator +(const point& p) {
+		Lines* temp = new Lines[size+1];
+		temp = this;
+		(*this)[size] = p;
+		size++;
+		*this = *temp;
+		return *this;
+	}
+	
+
+	friend Lines operator+(const point& p, Lines& l) {
+		Lines* tmp = new Lines[l.get_size()+1];
+		tmp = &l;
+		l = *tmp;
+		for (int i = l.get_size() - 1; i != 0; i--) {
+			l[i] = l[i - 1];
 		}
-
-		temp[size++] = p;
-
-		delete[] data;
-		data = temp;
-
-		return *this;
+		l[0] = p;
+		return l;
 	}
 
-	Lines operator+(const point& p) const {
-		Lines temp(0,0);
-		temp += p;
-		return temp;
-	}
-
-	/*friend Lines operator+(const point& p, const Lines& l) {
-		Lines temp;
-		temp[0] = p;
-		temp += l;
-		return temp;
-	}*/
-
-	/*bool operator==(const Lines& l) {
+	bool operator==(const Lines& l) {
 		if (l.size != size) {
 			return false;
 		}
 		else {
-			cout << "Enter the accuracy: ";
-			cin >> Eps;
-			for (size_t j = 0; j < size; j++)
+			for (int j = 0; j < size; j++)
 			{
-				if (fabs(data[j].x - l.data[j].x) > Eps or fabs(data[j].y - l.data[j].y) > Eps) {
-					return false;
-				}
+				if ((*this)[j].x != l[j].x || (*this)[j].y != l[j].y) return false;
 			}
 			return true;
 		}
-	}*/
-	/*bool operator!=(const Lines& l) {
+	}
+	bool operator!=(const Lines& l) {
 		return !(*this == l);
-	}*/
-	void myletter() const {
-		Lines b(0,0);
-		b += point(-0.2, 0);
-		b += point(-0.2, 0.5);
-		b += point(0.01, 0.5);
-		/*for (size_t i = 0; i < b.get_size(); i++)
-		{
-			cout << b[i];
-		}*/
-		cout << b;
+	}
+	void myletter() {
+		point p(0, 0);
+		(*this) = (*this) + p;
+		point p1(-0.2, 0);
+		(*this) = (*this)  + p1;
+		point p2(-0.2, 0.5);
+		(*this) = (*this)  + p2;
+		point p3(0.01, 0.5);
+		(*this) = (*this)  +  p3;
+		cout << this;
 	}
 
 	double length() const {
 		double len = 0;
-		for (size_t i = 0; i < size-1; i++)
+		for (size_t i = 0; i < size - 1; i++)
 		{
 			len += pow(pow(data[i + 1].x - data[i].x, 2) + pow(data[i + 1].y - data[i].y, 2), 0.5);
 		}

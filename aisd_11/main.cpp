@@ -1,4 +1,4 @@
-﻿#include "Header (1).h"
+#include "Header.h"
 
 
 int menu()
@@ -21,71 +21,78 @@ point get_points() {
 	cin >> x;
 	cout << "Enter y:" << endl;
 	cin >> y;
-	return point(x, y);
+	point p;
+	p.x = x;
+	p.y = y;
+	return p;
 }
 int main()
 {
-
 	cout << "Enter the number of tops of broken line: " << endl;
-	int size;
+	int size, size1;
 	cin >> size;
-	Lines a(0, 0);
-	Lines c(0, 0);
+	Lines a(size);
+	
 	point p, p1;
 	for (int i = 0; i < size; i++) {
 
 		p = get_points();
-		a += p;
+		a = a + p;
 	}
 	int m;
 	do {
 		m = menu();
-		switch (m) {
-		case 1:
+		if (m == 1)
+		{
 			cout << "Enter the number of tops of new broken line: " << endl;
-			int size1;
 			cin >> size1;
+			Lines c(size1);
 			for (int i = 0; i < size1; i++) {
 
 				p1 = get_points();
-				a += p1;
+				c  = c + p1;
 			}
-			for (size_t i = 0; i < a.get_size(); i++)
+			a += c;
+			for (int i = 0; i < a.get_size(); i++)
 			{
 				cout << a[i];
 			}
+			cout << a;
 			break;
-		case 2:
+		}
+		if (m == 2)
+		{
 			cout << "Enter x and y for new point: " << endl;
 			p1 = get_points();
-			a += p1;
-			for (size_t i = 0; i < a.get_size(); i++)
-			{
-				cout << a[i];
-			}
+			a  = a + p1;
+			cout << a;
 			break;
-		case 3:
+		}
+		if (m == 3)
+		{
+			Lines c(2);
 			cout << "Enter x and y for new point" << endl;
 			p1 = get_points();
-			c += p1;
-			c += a;
-			for (size_t i = 0; i < c.get_size(); i++)
-			{
-				cout << c[i];
-			}
-			a = c;
+			c = p1 + a;
+			cout << c;
 			break;
-		case 4:
+		}
+		if (m == 4)
+		{
 			cout << "length of broken line is " << a.length() << endl;
 			break;
-		case 5:
+		}
+		if (m == 5)
+		{
 			for (size_t i = 0; i < a.get_size(); i++)
 			{
 				cout << a[i];
 			}
 			cout << a;
 			break;
-		case 6:
+		}
+		if (m==6)
+		{
 			a.myletter();
 			break;
 		}
